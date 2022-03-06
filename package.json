@@ -1,0 +1,16 @@
+{
+  "name": "ogp-tools",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "git@github.com:yu0819ki/ogp-tools.git",
+  "author": "yu0819ki <yu0819ki@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "koa": "^2.13.4",
+    "lodash": "^4.17.21"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
