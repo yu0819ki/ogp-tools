@@ -1,8 +1,9 @@
 const _ = require('lodash');
 const Koa = require('koa');
-const router = require('koa-path-match')();
+const Router = require('@koa/router');
 const Parser = require('./lib/Parse.js');
 const app = new Koa();
+const router = new Router();
 
 // Constants
 const SERVER_PORT = _.get(process.env, 'PORT', _.get(process.env, 'SERVER_PORT', 80));
@@ -20,14 +21,13 @@ app.use(async (ctx, next) => {
     };
   }
 });
+// Routing
+app.use(router
+  .get('/', async ctx => { ctx.body = 'Hello OGP Tools'; })
+  .get('/parse', Parser.parseOgp)
+  .routes());
 
-// response
-app.use(router('/')
-  .get(async ctx => {
-    ctx.body = 'Hello Koa';
-  }));
-app.use(router('/parse')
-  .get(parser.parseOgp));
+
 
 app.listen(SERVER_PORT, SERVER_HOST);
 console.log(`Running on http://${SERVER_HOST}:${SERVER_PORT}`);
