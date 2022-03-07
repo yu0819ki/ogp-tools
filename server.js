@@ -5,7 +5,7 @@ const app = new Koa();
 
 // Constants
 const SERVER_PORT = _.get(process.env, 'PORT', _.get(process.env, 'SERVER_PORT', 80));
-const SERVER_HOST = _.get(process.env, 'HOST', _.get(process.env, 'SERVER_HOST', 80));
+const SERVER_HOST = _.get(process.env, 'HOST', _.get(process.env, 'SERVER_HOST', '0.0.0.0'));
 
 // response
 app.use(router('/')
