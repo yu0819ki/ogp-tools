@@ -2,6 +2,7 @@ const _ = require('lodash');
 const Koa = require('koa');
 const Router = require('@koa/router');
 const Parser = require('./lib/Parse.js');
+const ErrorHandler = require('./lib/ErrorHandler.js');
 const app = new Koa();
 const router = new Router();
 
@@ -9,24 +10,16 @@ const router = new Router();
 const SERVER_PORT = _.get(process.env, 'PORT', _.get(process.env, 'SERVER_PORT', 80));
 const SERVER_HOST = _.get(process.env, 'HOST', _.get(process.env, 'SERVER_HOST', '0.0.0.0'));
 
-// default error handler
-app.use(async (ctx, next) => {
-  try {
-    await next();
-  } catch (err) {
-    // will only respond with JSON
-    ctx.status = err.statusCode || err.status || 500;;
-    ctx.body = {
-      message: err.message
-    };
-  }
-});
+// error handler
+app.use(ErrorHandler.defaultErrorHandler);
+
 // Routing
 app.use(router
   .get('/', async ctx => { ctx.body = 'Hello OGP Tools'; })
   .get('/parse', Parser.parseOgp)
   .routes());
 
+app.use(ErrorHandler.httpErrorFinisher);
 
 
 app.listen(SERVER_PORT, SERVER_HOST);
