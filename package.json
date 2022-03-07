@@ -7,9 +7,12 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "http-errors": "^2.0.0",
     "koa": "^2.13.4",
     "koa-path-match": "^3.0.0",
     "lodash": "^4.17.21",
+    "node-fetch": "2",
+    "qs": "^6.10.3",
     "unfurl.js": "^5.6.4"
   },
   "scripts": {
