@@ -1,10 +1,7 @@
-const createError = require('http-errors');
 const _ = require('lodash');
-const qs = require('qs');
-const { unfurl } = require('unfurl.js');
-const { FetchError } = require('node-fetch');
 const Koa = require('koa');
 const router = require('koa-path-match')();
+const Parser = require('./lib/Parse.js');
 const app = new Koa();
 
 // Constants
@@ -17,7 +14,7 @@ app.use(async (ctx, next) => {
     await next();
   } catch (err) {
     // will only respond with JSON
-    ctx.status = err.statusCode || err.status || 500;
+    ctx.status = err.statusCode || err.status || 500;;
     ctx.body = {
       message: err.message
     };
@@ -30,24 +27,7 @@ app.use(router('/')
     ctx.body = 'Hello Koa';
   }));
 app.use(router('/parse')
-  .get(async ctx => {
-    const url = _.get(qs.parse(ctx.request.querystring), 'url');
-    if (!url) {
-      throw createError(400);
-    }
-    try {
-      ctx.body = await unfurl(url, {
-        oembed: true,
-        timeout: 300000,
-        userAgent: 'facebookexternalhit;ogp-tools-parser/0.1',
-      });
-    } catch (e) {
-      if (e instanceof FetchError && e.type === 'request-timeout') {
-        throw createError(504);
-      }
-      throw e;
-    }
-  }));
+  .get(parser.parseOgp));
 
 app.listen(SERVER_PORT, SERVER_HOST);
 console.log(`Running on http://${SERVER_HOST}:${SERVER_PORT}`);
