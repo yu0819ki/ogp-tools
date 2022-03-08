@@ -3,6 +3,7 @@ const Koa = require('koa');
 const Router = require('@koa/router');
 const Parser = require('./lib/Parse.js');
 const ErrorHandler = require('./lib/ErrorHandler.js');
+const Cache = require('./lib/Cache.js');
 const app = new Koa();
 const router = new Router();
 
@@ -12,6 +13,10 @@ const SERVER_HOST = _.get(process.env, 'HOST', _.get(process.env, 'SERVER_HOST',
 
 // error handler
 app.use(ErrorHandler.defaultErrorHandler);
+
+// Caching
+app.use(Cache.redisCacher);
+app.use(Cache.cachedResponse);
 
 // Routing
 app.use(router

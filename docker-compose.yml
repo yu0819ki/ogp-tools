@@ -11,6 +11,9 @@ services:
       - ${HOST_PORT:-33380}:${SERVER_PORT:-80}
     environment:
       SERVER_PORT: ${SERVER_PORT:-80}
+      REDIS_URL: ${REDIS_URL}
     volumes:
       - .:/usr/src/app
       - node_modules:/usr/src/app/node_modules
+  redis:
+    image: redis:6.2.6-alpine

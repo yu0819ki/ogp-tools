@@ -8,8 +8,11 @@
   "private": true,
   "dependencies": {
     "@koa/router": "^10.1.1",
+    "fast-safe-stringify": "^2.1.1",
     "http-errors": "^2.0.0",
+    "ioredis": "^4.28.5",
     "koa": "^2.13.4",
+    "koa-cash": "^4.1.0",
     "lodash": "^4.17.21",
     "node-fetch": "2",
     "qs": "^6.10.3",
