@@ -4,6 +4,7 @@ const Router = require('@koa/router');
 const Parser = require('./lib/Parse.js');
 const ErrorHandler = require('./lib/ErrorHandler.js');
 const Cache = require('./lib/Cache.js');
+const Limiter = require('./lib/Limiter.js');
 const app = new Koa();
 const router = new Router();
 
@@ -13,6 +14,9 @@ const SERVER_HOST = _.get(process.env, 'HOST', _.get(process.env, 'SERVER_HOST',
 
 // error handler
 app.use(ErrorHandler.defaultErrorHandler);
+
+// Rate-Limiter
+app.use(Limiter.rateLimitation);
 
 // Caching
 app.use(Cache.redisCacher);

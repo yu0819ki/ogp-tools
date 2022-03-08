@@ -13,6 +13,7 @@
     "ioredis": "^4.28.5",
     "koa": "^2.13.4",
     "koa-cash": "^4.1.0",
+    "koa-ratelimit": "^5.0.1",
     "lodash": "^4.17.21",
     "node-fetch": "2",
     "qs": "^6.10.3",
