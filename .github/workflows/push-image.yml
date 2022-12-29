@@ -1,0 +1,39 @@
+on:
+  workflow_dispatch:
+
+name: Docker Build and Push
+
+jobs:
+  publish_docker_image:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
+          audience: ${{ secrets.AUDIENCE }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
+      - name: Configure docker for artifact registry
+        run: |
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+
+      - name: Build Docker Image
+        run: |
+          docker build --target build \
+          --tag ${{ secrets.PKG_REPOSITORY}}/ogp-tools:latest \
+          --tag ${{ secrets.PKG_REPOSITORY}}/ogp-tools:$(echo $GITHUB_SHA | head -c7) \
+          .
+
+      - name: Push Docker Image
+        run: |
+          docker push ${{ secrets.PKG_REPOSITORY}}/ogp-tools:latest
+          docker push ${{ secrets.PKG_REPOSITORY}}/ogp-tools:$(echo $GITHUB_SHA | head -c7)
