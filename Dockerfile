@@ -5,6 +5,7 @@ WORKDIR /usr/src/app
 COPY package.json yarn.lock ./
 RUN yarn install --production
 
+COPY ./lib ./lib
 COPY server.js ./
 
 EXPOSE 80
